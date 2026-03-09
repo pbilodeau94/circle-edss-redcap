@@ -1,0 +1,170 @@
+﻿"Variable / Field Name","Form Name","Section Header","Field Type","Field Label","Choices, Calculations, OR Slider Labels","Field Note","Text Validation Type OR Show Slider Number","Text Validation Min","Text Validation Max",Identifier?,"Branching Logic (Show field only if...)","Required Field?","Custom Alignment","Question Number (surveys only)","Matrix Group Name","Matrix Ranking?","Field Annotation"
+record_id,edss,,text,"Record ID",,,,,,,,,,,,,
+date_of_assessment,edss,,text,"Date of Assessment {date_assessment_estimate}",,"Default to 1st of month and 1st of year if date or month are unknown",date_mdy,,,,,,,,,,
+date_assessment_estimate,edss,,radio,"Date estimated?","1, This is an exact date (or within several days) | 2, This is an estimate for date, but month/year are exact | 3, This is an estimate for date/month, but year is exact | 4, This is an estimate for date, month, and year",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+cat_gait,edss,Ambulation,yesno,"Does the patient have any gait difficulties/abnormalities?",,"If unsure, mark 'Yes' to answer additional questions",,,,,,,,,,," @INSTANCETABLE_HIDE @DEFAULT='0'"
+mild_gait_difficulties,edss,,yesno,"Mild gait difficulties? (Fully ambulatory but not unlimited distance)",,,,,,,"[cat_gait] = '1'",,,,,," @INSTANCETABLE_HIDE"
+restricted_ambulation,edss,,yesno,"Restricted ambulation?",,"Restricted Ambulation without need for Assistive Device",,,,,"[mild_gait_difficulties] = '0'",,,,,," @INSTANCETABLE_HIDE"
+level_of_restricted_ambula,edss,,radio,"Level of restricted ambulation","1, Some limitations in daily activities but able to work full time | 2, Impaired daily activities, can work with provisions | 3, Daily activities completely precluded or severe limitations in gait | 4, Daily activity information not available",,,,,,"[restricted_ambulation] = '1'",,,,,," @INSTANCETABLE_HIDE"
+assistance_required,edss,,yesno,"Assistance required? ",,,,,,,"[restricted_ambulation] = '0'",,,,,," @INSTANCETABLE_HIDE"
+what_type_of_assistance_is,edss,,radio,"What type of assistance is required? ","1, Unilateral assistance | 2, Bilateral assistance",,,,,,"[assistance_required] = '1'",,,,,," @INSTANCETABLE_HIDE"
+ambulation_distance_report,edss,,yesno,"Ambulation distance reported in note?",,,,,,,"[assistance_required] = '0'",,,,,," @INSTANCETABLE_HIDE"
+distance_assistance,edss,,radio,"What is the reported distance and assistance required?","1, Bilateral assistance, < 120 m | 2, Unilateral assistance, < 50 m | 3, Bilateral assistance, ≥120 m | 4, Unilateral assistance, ≥50 m | 5, < 100 m | 6, 100 - 199 m | 7, 200 - 299 m | 8, 300 - 499 m | 9, ≥500 m",,,,,,"[ambulation_distance_report] = '1'",,,,,," @INSTANCETABLE_HIDE"
+is_the_patient_wheelchair,edss,,yesno,"Is the patient wheelchair or bed-bound?",,,,,,,"[ambulation_distance_report] = '0'",,,,,," @INSTANCETABLE_HIDE"
+can_the_patient_get_out_of,edss,,yesno,"Can the patient get out of bed?",,,,,,,"[is_the_patient_wheelchair] = '1'",,,,,," @INSTANCETABLE_HIDE"
+what_is_their_functional_a,edss,,radio,"What is their functional ability?","1, Unable to wheel self, but can do activities such as eating or combing hair | 2, Needs some help with transfers and wheeling; can use arms for all other daily activities. | 3, Can wheel self and transfer alone.",,,,,,"[can_the_patient_get_out_of] = '1'",,,,,," @INSTANCETABLE_HIDE"
+can_the_use_their_arms,edss,,yesno,"Can the use their arms?",,,,,,,"[can_the_patient_get_out_of] = '0'",,,,,," @INSTANCETABLE_HIDE"
+can_communicate_and_or_eat,edss,,yesno,"Can communicate and/or eat?",,,,,,,"[can_the_use_their_arms] = '0'",,,,,," @INSTANCETABLE_HIDE"
+ambulatory_fs_score,edss,,calc,"Ambulatory Functional System Score","if([what_is_their_functional_a]='1',12,
+if([what_is_their_functional_a]='2',11,
+if([what_is_their_functional_a]='3',10,
+if([can_the_use_their_arms]='1',13,
+if([can_communicate_and_or_eat]='1',14,
+if([can_communicate_and_or_eat]='0',15,
+if([what_type_of_assistance_is]='1',6,
+if([what_type_of_assistance_is]='2',9,
+if([level_of_restricted_ambula]='3',4,
+if([distance_assistance]='1',9,
+if([distance_assistance]='2',8,
+if([distance_assistance]='3',7,
+if([distance_assistance]='4',6,
+if([distance_assistance]='5',5,
+if([distance_assistance]='6',4,
+if([distance_assistance]='7',3,
+if([distance_assistance]='8',2,
+if([mild_gait_difficulties]='1',1,
+if([mild_gait_difficulties]='0',0,
+if([cat_gait]=0,0,
+''
+))))))))))))))))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE @HIDDEN"
+display_ambulation_score,edss,,calc,"Ambulation Functional System Score","if([can_communicate_and_or_eat]= 0, 15,
+if([can_communicate_and_or_eat]= 1, 14,
+if([can_the_use_their_arms]=1, 13,
+if([what_is_their_functional_a]=1, 12,
+if([what_is_their_functional_a]=2, 11,
+if([what_is_their_functional_a]=3, 10,
+if([distance_assistance]=1, 9,
+if([distance_assistance]=2, 8,
+if([distance_assistance]=3, 7,
+if([distance_assistance]=4, 6,
+if([distance_assistance]=5, 5,
+if([distance_assistance]=6, 4,
+if([distance_assistance]=7, 3,
+if([distance_assistance]=8, 2,
+if([distance_assistance]=9, 1,
+if([what_type_of_assistance_is]=1, 6,
+if([what_type_of_assistance_is]=2, 9,
+if([what_type_of_assistance_is]=2, 9,
+if([restricted_ambulation]=1, 99,
+if([mild_gait_difficulties]=1, 1, 0
+))))))))))))))))))))","An FS score of 99 corresponds to RESTRICTED ambulation",,,,,,,,,,,
+cat_vision,edss,Vision,yesno,"<div class=""rich-text-field-label""><p>Does the patient have any visual abnormalities (including acuity, visual field changes, or symptoms/complaints)?</p></div>",,"If unsure, mark 'Yes' to answer additional questions",,,,,,,,,,," @INSTANCETABLE_HIDE"
+va_avail,edss,,yesno,"<div class=""rich-text-field-label""><p>Is visual acuity data available?</p></div>",,,,,,,,,,,,," @INSTANCETABLE_HIDE"
+worseeye_full,edss,,radio,"What is the visual acuity in the worse eye? (Full scale)","1, 20/20 | 2, 20/21- 20/29 | 3, 20/30- 20/39 | 4, 20/40 - 20/59 | 5, 20/60 - 20/99 | 6, 20/100- 20/199 | 7, 20/200 | 8, Finger Counting | 9, Hand Motion | 10, Light Perception | 11, No light perception",,,,,,[va_avail]='1',,,,,," @INSTANCETABLE_HIDE"
+bettereye_full,edss,,radio,"What is the visual acuity in the better eye? (Full scale)","1, 20/20 | 2, 20/21- 20/29 | 3, 20/30- 20/39 | 4, 20/40 - 20/59 | 5, 20/60 - 20/99 | 6, 20/100- 20/199 | 7, 20/200 | 8, Finger Counting | 9, Hand Motion | 10, Light Perception | 11, No light perception",,,,,,[va_avail]='1',,,,,," @INSTANCETABLE_HIDE"
+vfs,edss,,radio,"How are the patient's measured visual fields?","1, Normal | 2, Abnormal visual fields | 3, Complete hemianopia or equivalent",,,,,,[cat_vision]='1',,,,,," @INSTANCETABLE_HIDE"
+visual_sx_nova,edss,,radio,"How are the visual symptoms described?","1, No mention of vision symptoms | 2, Mention of visual symptoms (but not severe visual symptoms) | 3, Mention of severe visual symptoms","This field is for patients without documented VA or visual symptoms",,,,,[va_avail]='0',,,,,," @INSTANCETABLE_HIDE
+@NONEOFTHEABOVE=1"
+visual_sx,edss,,radio,"What other vision symptoms does the patient have?","1, No visual symptoms or disc pallor mentioned | 2, Minor scotoma or disc pallor | 3, Large scotoma",,,,,,[cat_vision]='1',,,,,," @INSTANCETABLE_HIDE"
+calculated_original_fs,edss,,calc,"Visual Calculated Original FS","if(([worseeye_full] >= 8 and [bettereye_full] >= 5), 6, if((([worseeye_full] = 6 or [worseeye_full] = 7) and ([bettereye_full] = 7 or [bettereye_full] = 6 or [bettereye_full] = 5)), 5, if([worseeye_full] >= 8 and [bettereye_full] <= 4, 5, if((([worseeye_full] = 7 or [worseeye_full] = 6) and [bettereye_full] <= 4) or ([worseeye_full] = 5 and [bettereye_full] = 5) or [vfs] = 3, 4, if(([worseeye_full] = 5 and [bettereye_full] <= 4) or [visual_sx] = 3, 3, if(([worseeye_full] = 4 or [worseeye_full] = 3 or [vfs] = 2), 2, if(([worseeye_full] = 2 or [visual_sx] = 2), 1, if([visual_sx_nova] = 1, 0, if([visual_sx_nova] = 2, 2, if([visual_sx_nova] = 3, 4, if(([va_avail] = 0 or [va_avail] = '') and [cat_vision] = 0, 0, if([worseeye_full] = 1 and [vfs] = 1 and [visual_sx] = 1, 0, if([worseeye_full] = 1 and [cat_vision] = 0, 0, '') ))))))))))))","If this field is blank, ensure that worse eye VA is indeed worse or equal to better eye VA ",,,,,,,,,,," @INSTANCETABLE_HIDE
+@DEFAULT="""""
+visual_fs_score_adj,edss,,calc,"<div class=""rich-text-field-label""><p>Adjusted Neurostatus Visual FS</p></div>","if([calculated_original_fs]=6,4,
+if([calculated_original_fs]=5,3,
+if([calculated_original_fs]=4,3,
+if([calculated_original_fs]=3,2,
+if([calculated_original_fs]=2,2,
+if([calculated_original_fs]=1,1,
+if([calculated_original_fs]=0,0,"""")))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE
+@DEFAULT = """""
+cat_bs,edss,Brainstem,yesno,"<div class=""rich-text-field-label""><p>Does the patient have any brainstem abnormalities?</p> <p><span style=""font-weight: normal;""><em>(i.e. double vision/nystagmus, swallowing/speaking abnormalities, facial palsies, etc.)</em></span></p></div>",,"If unsure, mark 'Yes' to answer additional questions",,,,,,,,,,," @INSTANCETABLE_HIDE @DEFAULT='0'"
+brain_stem_step_1,edss,,yesno,"Complete inability to speak or swallow?",,,,,,,[cat_bs]='1',,,,,," @INSTANCETABLE_HIDE"
+brain_stem_step_2,edss,,yesno,"<div class=""rich-text-field-label""><p>Any of the following present? </p> <ul> <li><span style=""font-weight: normal;"">Severe facial numbness</span></li> <li><span style=""font-weight: normal;"">Severe facial weakness/drooling/patching</span></li> <li><span style=""font-weight: normal;"">Severe hearing loss</span></li> <li><span style=""font-weight: normal;"">Severe dysarthria (incomprehensible speech)</span></li> <li><span style=""font-weight: normal;"">Sustained dysphagia (pureed diet)</span><br /><br /></li> </ul></div>",,,,,,,"[brain_stem_step_1] = '0'",,,,,," @INSTANCETABLE_HIDE"
+brain_stem_step_3,edss,,yesno,"<div class=""rich-text-field-label""><p>Any of the following present? </p> <ul> <li><span style=""font-weight: normal;"">INO</span></li> <li><span style=""font-weight: normal;"">Severe EOM abnormality</span></li> <li><span style=""font-weight: normal;"">Severe Nystagmus</span></li> <li><span style=""font-weight: normal;"">Moderate facial numbness</span></li> <li><span style=""font-weight: normal;"">Moderate facial weakness</span></li> <li><span style=""font-weight: normal;"">Moderate hearing loss</span></li> <li><span style=""font-weight: normal;"">Moderate dysarthria</span></li> <li><span style=""font-weight: normal;"">Dysphagia to liquids and solids</span></li> </ul></div>",,,,,,,"[brain_stem_step_2] = '0'",,,,,," @INSTANCETABLE_HIDE"
+brain_stem_step_4,edss,,radio,"Any of the following present? 
+
+
+","1, Dysphagia to liquids only OR Any abnormality mentioned/perceived by patient | 2, Signs only on exam and NOT mentioned by patient | 3, None of above",,,,,,"[brain_stem_step_3] = '0'",,,,,," @INSTANCETABLE_HIDE"
+brainstem_fs_score,edss,,calc,"Brainstem Functional System Score","if([brain_stem_step_1]=1,5,if([brain_stem_step_2]=1,4,if([brain_stem_step_3]=1,3,if([brain_stem_step_4]=1,2,if([brain_stem_step_4]=2,1,if([brain_stem_step_4]=3 OR [cat_bs]=0,0,""""))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+pyramidal_step_1,edss,Pyramidal,yesno,"Muscle weakness (BMRC < 5 anywhere?)",,,,,,,,,,,,," @INSTANCETABLE_HIDE @DEFAULT='0'"
+bmrc,edss,,radio,"<div class=""rich-text-field-label""><p>BMRC grades :</p> <p><br /><span style=""font-weight: normal;"">0 = no muscular contraction</span><br /><span style=""font-weight: normal;"">1 = contraction, but no joint movement</span><br /><span style=""font-weight: normal;"">2 = movement, but not against gravity</span><br /><span style=""font-weight: normal;"">3 = movement against gravity but not against resistance</span><br /><span style=""font-weight: normal;"">4 = movement against resistance, but not full strength</span><br /><span style=""font-weight: normal;"">5 = normal, no weakness</span><br /><br /><em><span style=""font-weight: normal;"">Note: </span></em></p> <ul> <li><em><span style=""font-weight: normal;"">Entire limb = 5 muscle groups (MG), </span></em></li> <li><em><span style=""font-weight: normal;"">Proximal (both upper and lower) = 3 MG, Distal (both upper and lower) = 2 MG </span></em></li> <li><em><span style=""font-weight: normal;"">When scoring, always round to the worse BMRC grade • E.g.5-=4,4+=4)</span></em></li> </ul></div>","1, BMRC 0-1 in all 4 limbs OR Quadriplegia | 2, BMRC 0-1 in two limbs (bilateral LE or one side) OR BMRC 2 in 3-4 limbs OR Paraplegia or hemiplegia OR Severe quadriparesis | 3, BMRC 3 in > 2 MG OR BMRC 2 in two limbs (bilateral LE or one side) OR BMRC 0-1 in one extremity OR Monoplegia OR Severe paraparesis or hemiparesis OR Moderate quadriparesis | 4, BMRC 4 in > 2MG OR BMRC 3 in 1-2 MG OR BMRC 0-2 in 1 MG OR Severe monoparesis OR Mild to moderate paraparesis or hemiparesis | 5, BMRC4in1-2MG OR Minimal disability (not meeting other criteria)",,,,,,"[pyramidal_step_1] = '1'",,,,,," @INSTANCETABLE_HIDE"
+pyramidal_step_2,edss,,yesno,"Motor fatigability OR gait difficulty OR minimal disability?",,,,,,,"[pyramidal_step_1] = '0'",,,,,," @INSTANCETABLE_HIDE"
+pyramidal_step_3,edss,,yesno,"<div class=""rich-text-field-label""><p>Abnormality in ANY of the following:</p> <ul> <li><span style=""font-weight: normal;"">Reflexes</span></li> <li><span style=""font-weight: normal;"">Pronator/downward drift</span></li> <li><span style=""font-weight: normal;"">Ability to lift legs off of bed</span></li> <li><span style=""font-weight: normal;"">Walking on heels/toes/hopping</span></li> <li><span style=""font-weight: normal;"">Spasticity</span></li> </ul></div>",,,,,,,"[pyramidal_step_2] = '0'",,,,,," @INSTANCETABLE_HIDE"
+pyramidal_fs_score,edss,,calc,"Pyramidal Functional System Score","if([bmrc]=1,6,if([bmrc]=2,5,if([bmrc]=3,4,if([bmrc]=4,3,if([bmrc]=5,2,if([pyramidal_step_2]=1,2,if([pyramidal_step_3]=1,1,if([pyramidal_step_3]=0,0,""""))))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+cat_cere,edss,Cerebellar,yesno,"<div class=""rich-text-field-label""><p>Any cerebellar function abnormalities?</p> <p><em><span style=""font-weight: normal;"">(i.e. gait or truncal ataxia or Romberg)</span></em></p></div>",,"If unsure, mark 'Yes' to answer additional questions",,,,,,,,,,," @INSTANCETABLE_HIDE @DEFAULT='0'"
+cerebellar_step_1,edss,,yesno,"Is patient unable to perform ANY coordinated movements due to ataxia?",,,,,,,[cat_cere]='1',,,,,," @INSTANCETABLE_HIDE"
+cerebellar_step_2,edss,,yesno,"<div class=""rich-text-field-label""><p>Severe gait/truncal ataxia present?<br /><br /></p></div>",,,,,,,"[cerebellar_step_1] = '0'",,,,,," @INSTANCETABLE_HIDE"
+cerebellar_step_25,edss,,yesno,"<div class=""rich-text-field-label""><p>Is severe limb ataxia (in 3-4 limbs) present?<br /><br /><em><span style=""font-weight: normal;"">Note:</span></em><br /><em><span style=""font-weight: normal;"">Limb ataxia = Tremor or dysmetria or abnormality in rapid alternating movements</span></em></p></div>",,,,,,,"[cerebellar_step_2] = '1'",,,,,," @INSTANCETABLE_HIDE"
+cerebellar_step_3,edss,,radio,"Other physical examination findings:","1, Moderate gait/truncal ataxia OR Moderate limb ataxia OR Romberg unstable with eyes open | 2, Mild ataxia (noted by patient) OR Romberg unstable with eyes closed OR Tandem not possible OR Patient reports any other abnormality while exam is normal | 3, Mild ataxia (patient often unaware) OR Tandem impaired | 4, Normal",,,,,,"[cerebellar_step_2] = '0'",,,,,," @INSTANCETABLE_HIDE"
+cerebellar_fs_score,edss,,calc,"Cerebellar Functional System Score","if([cerebellar_step_1]=1,5,if([cerebellar_step_2]=1 AND [cerebellar_step_25]=1,4,if([cerebellar_step_2]=1 AND [cerebellar_step_25]=0,3,if([cerebellar_step_3]=1,3,if([cerebellar_step_3]=2,2,if([cerebellar_step_3]=3,1,if([cerebellar_step_3]=4 OR [cat_cere]=0,0,"""")))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+cat_sens,edss,Sensory,yesno,"<div class=""rich-text-field-label""><p>Any sensory abnormalities?<br><br></p> <p><em><span style=""font-weight: normal;"">(Including paresthesias/complaints of numbness and tingling)</span></em></p></div>",,"If unsure, mark 'Yes' to answer additional questions",,,,,,,,,,," @INSTANCETABLE_HIDE @DEFAULT='0'"
+worst_sensory_fs,edss,,radio,"<div class=""rich-text-field-label""><p>Which sensory component has the WORST functional Score?</p> <p> </p> <p><em><span style=""font-weight: normal;"">Note: </span></em></p> <ul> <li><em><span style=""font-weight: normal;"">The worst (highest scoring) abnormality drives the FS score.</span></em></li> <li><em><span style=""font-weight: normal;"">If not all three scores are available, use the ones that are available</span></em></li> <li><em style=""font-weight: normal;"">Superficial sensation = light touch, pain, pinprick, and/or temperature</em></li> <li><span style=""font-weight: normal;""><em>Complete = Severe = Marked</em></span></li> </ul></div>","1, Superficial Sensation | 2, Position | 3, Vibration",,,,,,"[cat_sens] = '1'",,,,,," @INSTANCETABLE_HIDE"
+superficial_sensation,edss,,radio,"<div class=""rich-text-field-label""><p>Superficial sensation (light touch, pain, pin prick, and/or temperature) findings:</p> <p> </p> <p><em><span style=""font-weight: normal;"">Note:</span></em></p> <div class=""page"" title=""Page 8""> <div class=""section""> <div class=""layoutArea""> <div class=""column""> <ul> <li> <p><em><span style=""font-weight: normal;"">If the number of limbs affected is not mentioned, assume 2.</span></em></p> </li> <li> <p><em><span style=""font-weight: normal;"">If the severity is not mentioned, assumed moderate.</span></em></p> </li> <li> <p><em><span style=""font-weight: normal;"">Complete = Severe = Marked</span></em></p> </li> </ul> </div> </div> </div> </div></div>","1, Complete loss below head | 2, Complete loss 1-2 limbs OR Moderate loss below head | 3, Moderate loss > 2 limbs | 4, Moderate loss 1-2 limbs OR Mild loss > 2 limbs | 5, Mild loss 1-2 limbs | 6, Patient reports abnormality but exam is normal | 7, Normal",,,,,,"[worst_sensory_fs] = '1'",,,,,," @INSTANCETABLE_HIDE"
+position,edss,,radio,"<div class=""rich-text-field-label""><p>Position findings:</p> <p><span style=""font-weight: normal;""><em>Note:</em></span></p> <div class=""page"" title=""Page 8""> <div class=""section""> <div class=""layoutArea""> <div class=""column""> <ul> <li> <p><span style=""font-weight: normal;""><em>If the number of limbs affected is not mentioned, assume 2.</em></span></p> </li> <li> <p><span style=""font-weight: normal;""><em>If the severity is not mentioned, assumed moderate.</em></span></p> </li> <li> <p><span style=""font-weight: normal;""><em>Complete = Severe = Marked</em></span></p> </li> </ul> </div> </div> </div> </div></div>","1, Complete loss below head | 2, Complete loss 1-2 limbs OR Moderate loss below head | 3, Moderate loss > 2 limbs | 4, Moderate loss 1-2 limbs OR Mild loss > 2 limbs | 5, Mild loss 1-2 limbs | 6, Patient reports abnormality but exam is normal | 7, Normal",,,,,,"[worst_sensory_fs] = '2'",,,,,," @INSTANCETABLE_HIDE"
+vibration,edss,,radio,"<div class=""rich-text-field-label""><p>Vibration findings: <br /><br /></p> <p><span style=""font-weight: normal;""><em>Note:</em></span></p> <div class=""page"" title=""Page 8""> <div class=""section""> <div class=""layoutArea""> <div class=""column""> <ul> <li><span style=""font-weight: normal;""><em>Quantitative abnormalities in vibration are graded as in Neurostatus: 5-7 out of 8 is scored as mild, and 1-4 out of 8 is scored as moderate.</em></span></li> <li> <p><span style=""font-weight: normal;""><em>If the number of limbs affected is not mentioned, assume 2.</em></span></p> </li> <li> <p><span style=""font-weight: normal;""><em>If the severity is not mentioned, assumed moderate.</em></span></p> </li> <li> <p><span style=""font-weight: normal;""><em>Complete = Severe = Marked</em></span></p> </li> </ul> </div> </div> </div> </div></div>","1, Complete loss below head | 2, Complete loss > 2 limbs | 3, Complete loss 1-2 limbs OR Moderate loss > 2 limbs | 4, Moderate loss 1-2 limbs OR Mild loss > 2 limbs | 5, Mild loss 1-2 limbs | 6, Patient reports abnormality but exam is normal | 7, Normal",,,,,,"[worst_sensory_fs] = '3'",,,,,," @INSTANCETABLE_HIDE"
+sensory_fs_score,edss,,calc,"<div class=""rich-text-field-label""><p>Sensory Functional System Score</p></div>","if([superficial_sensation]=1,6,if([superficial_sensation]=2,5,if([superficial_sensation]=3,4,if([superficial_sensation]=4,3,if([superficial_sensation]=5,2,if([superficial_sensation]=6,1,if([superficial_sensation]=7,0,if([position]=1,6,if([position]=2,5,if([position]=3,4,if([position]=4,3,if([position]=5,2,if([position]=6,1,if([position]=7,0,if([vibration]=1,5,if([vibration]=2,4,if([vibration]=3,3,if([vibration]=4,2,if([vibration]=5 OR [vibration]=6,1,if([vibration]=7 OR [cat_sens]=0,0,""""))))))))))))))))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+cat_bb,edss,Bowel/bladder,yesno,"Any bowel or bladder abnormalities or complaints?",,"If unsure, mark 'Yes' to answer additional questions",,,,,,,,,,," @INSTANCETABLE_HIDE @DEFAULT='0'"
+bb_step1,edss,,yesno,"<div class=""rich-text-field-label""><p>Complete loss of bowel and/or bladder function?</p></div>",,,,,,,[cat_bb]='1',,,,,," @INSTANCETABLE_HIDE"
+bb_step2,edss,,radio,"Loss of both bowel AND bladder function, or only one? ","1, Both lost | 0, Either bowel OR bladder function loss",,,,,,[bb_step1]=1,,,,,," @INSTANCETABLE_HIDE"
+bb_original_5,edss,,yesno,"Is the patient using an external or indwelling catheter?",,,,,,,"[bb_step1] = '0'",,,,,," @INSTANCETABLE_HIDE"
+bb_original_4,edss,,yesno,"Almost constant catheterization? ",,,,,,,"[bb_original_5] = '0'",,,,,," @INSTANCETABLE_HIDE"
+bb_original_3,edss,,yesno,"<div class=""rich-text-field-label""><p>Any of the following present? </p> <ul> <li>Bladder: <ul> <li><span style=""font-weight: normal;"">Frequent/Severe problems</span></li> <li><span style=""font-weight: normal;"">>1 accident/week</span></li> <li><span style=""font-weight: normal;"">Intermittent self-catheterization</span></li> </ul> </li> <li>Bowel: <ul> <li><span style=""font-weight: normal;"">Severe problems or Enema or Manual evacuation</span></li> </ul> </li> </ul></div>",,,,,,,"[bb_original_4] = '0'",,,,,," @INSTANCETABLE_HIDE"
+bb_original_2,edss,,yesno,"<div class=""rich-text-field-label""><p>Any of the following present? </p> <ul> <li>Bladder: <ul> <li><span style=""font-weight: normal;"">Moderate problems</span></li> <li><span style=""font-weight: normal;"">Frequent UTIs or</span></li> <li><span style=""font-weight: normal;"">≤ 1 accident/week</span></li> <li><span style=""font-weight: normal;"">Wears pads</span></li> </ul> </li> <li>Bowel: <ul> <li><span style=""font-weight: normal;"">Moderate problems OR Wears pads</span></li> </ul> </li> </ul></div>",,,,,,,"[bb_original_3] = '0'",,,,,," @INSTANCETABLE_HIDE"
+bb_original_1,edss,,yesno,"<div class=""rich-text-field-label""><p>Any of the following present?</p> <ul> <li>Bladder: <ul> <li><span style=""font-weight: normal;"">Mild retention</span></li> <li><span style=""font-weight: normal;"">Urgency</span></li> <li><span style=""font-weight: normal;"">Anything mentioned by patient but not meeting above criteria</span></li> </ul> </li> <li>Bowel: <ul> <li><span style=""font-weight: normal;"">Mild problems or Any other mention</span></li> </ul> </li> </ul></div>",,,,,,,"[bb_original_2] = '0'",,,,,," @INSTANCETABLE_HIDE"
+bb_fs_score_orig,edss,,calc,"Bladder/Bowel Original Functional System Score","if(([bb_step1]=1 AND [bb_step2]=1),6,if(([bb_step1]=1 AND [bb_step2]=0),5,if([bb_original_5]=1,5,if([bb_original_4]=1,4,if([bb_original_3]=1,3,if([bb_original_2]=1,2,if([bb_original_1]=1,1,if([bb_original_1]=0 OR [cat_bb]=0,0,""""))))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+bb_fs_score_adj,edss,,calc,"Bowel and Bladder Adjusted FS Score","if([bb_fs_score_orig]=5,4,if([bb_fs_score_orig]=4,3,if([bb_fs_score_orig]=3,3,if([bb_fs_score_orig]=2,2,if([bb_fs_score_orig]=1,1,if([bb_fs_score_orig]=0,0,""""))))))",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+cerebral_step_1,edss,Cerebral,yesno,"Any cognitive problems?",,,,,,,,,,,,," @INSTANCETABLE_HIDE @DEFAULT='0'"
+level_cog,edss,,radio,"Level of cognitive problem: ","1, Dementia | 2, Loss of orientation to any modality | 3, Oriented 3x but abnormalities in mental exam | 4, Any mention of cognitive problems not meeting above criteria",,,,,,"[cerebral_step_1] = '1'",,,,,," @INSTANCETABLE_HIDE"
+fatigue,edss,,radio,"Is fatigue present? ","1, Yes, moderate to severe | 2, Yes, mild | 3, No or fatigue severity not mentioned",,,,,,"[cerebral_step_1] = '0'",,,,,," @INSTANCETABLE_HIDE @DEFAULT='3'"
+cerebral_fs_score,edss,,calc,"Cerebral Functional System Score","if([level_cog]=1,5,if([level_cog]=2,4,if([level_cog]=3,3,if([level_cog]=4,2,0))))",,,,,,,,,,,," @INSTANCETABLE_HIDE"
+highest_fs,edss,,calc,"highest fs","max([ambulatory_fs_score],[visual_fs_score_adj],[brainstem_fs_score],[pyramidal_fs_score],[cerebellar_fs_score],[sensory_fs_score],[bb_fs_score_adj],[cerebral_fs_score])",,,,,,,,,,,," @HIDDEN"
+fs_zero,edss,,calc,"Number of 0 FS Values ","if([ambulatory_fs_score]=0, 1, 0) +
+if([visual_fs_score_adj]=0, 1, 0) +
+if([brainstem_fs_score]=0, 1, 0) +
+if([pyramidal_fs_score]=0, 1, 0) +
+if([cerebellar_fs_score]=0, 1, 0) +
+if([sensory_fs_score]=0, 1, 0) +
+if([bb_fs_score_adj]=0, 1, 0) +
+if([cerebral_fs_score]=0, 1, 0)",,,,,,,,,,,," @HIDDEN"
+fs_one,edss,,calc,"Number of 1 FS Values","if([ambulatory_fs_score]=1, 1, 0) +
+if([visual_fs_score_adj]=1, 1, 0) +
+if([brainstem_fs_score]=1, 1, 0) +
+if([pyramidal_fs_score]=1, 1, 0) +
+if([cerebellar_fs_score]=1, 1, 0) +
+if([sensory_fs_score]=1, 1, 0) +
+if([bb_fs_score_adj]=1, 1, 0) +
+if([cerebral_fs_score]=1, 1, 0)",,,,,,,,,,,," @HIDDEN"
+fs_two,edss,,calc,"Number of 2 FS Values","if([ambulatory_fs_score]=2, 1, 0) +
+if([visual_fs_score_adj]=2, 1, 0) +
+if([brainstem_fs_score]=2, 1, 0) +
+if([pyramidal_fs_score]=2, 1, 0) +
+if([cerebellar_fs_score]=2, 1, 0) +
+if([sensory_fs_score]=2, 1, 0) +
+if([bb_fs_score_adj]=2, 1, 0) +
+if([cerebral_fs_score]=2, 1, 0)",,,,,,,,,,,," @HIDDEN"
+fs_three,edss,,calc,"Number of 3 FS Values","if([ambulatory_fs_score]=3, 1, 0) +
+if([visual_fs_score_adj]=3, 1, 0) +
+if([brainstem_fs_score]=3, 1, 0) +
+if([pyramidal_fs_score]=3, 1, 0) +
+if([cerebellar_fs_score]=3, 1, 0) +
+if([sensory_fs_score]=3, 1, 0) +
+if([bb_fs_score_adj]=3, 1, 0) +
+if([cerebral_fs_score]=3, 1, 0)",,,,,,,,,,,," @HIDDEN"
+fs_four,edss,,calc,"Number of 4 FS Values","if([ambulatory_fs_score]=4, 1, 0) +
+if([visual_fs_score_adj]=4, 1, 0) +
+if([brainstem_fs_score]=4, 1, 0) +
+if([pyramidal_fs_score]=4, 1, 0) +
+if([cerebellar_fs_score]=4, 1, 0) +
+if([sensory_fs_score]=4, 1, 0) +
+if([bb_fs_score_adj]=4, 1, 0) +
+if([cerebral_fs_score]=4, 1, 0)",,,,,,,,,,,," @HIDDEN"
+fs_five,edss,,calc,"Number of 5+ FS Values","if([ambulatory_fs_score]>=5, 1, 0) +
+if([visual_fs_score_adj]>=5, 1, 0) +
+if([brainstem_fs_score]>=5, 1, 0) +
+if([pyramidal_fs_score]>=5, 1, 0) +
+if([cerebellar_fs_score]>=5, 1, 0) +
+if([sensory_fs_score]>=5, 1, 0) +
+if([bb_fs_score_adj]>=5, 1, 0) +
+if([cerebral_fs_score]>=5, 1, 0)",,,,,,,,,,,," @HIDDEN"
+edss_calculated_pre,edss,,calc,"EDSS Pre-Adjusted Score","if([ambulatory_fs_score]='15',9.5, if([ambulatory_fs_score]='14',9, if([ambulatory_fs_score]='13',8.5, if([ambulatory_fs_score]='12',8, if([ambulatory_fs_score]='11',7.5, if([ambulatory_fs_score]='10',7, if(([ambulatory_fs_score]='9' or [ambulatory_fs_score]='8'),6.5, if(([ambulatory_fs_score]='7' or [ambulatory_fs_score]='6' or [ambulatory_fs_score]='5'),6.0, if([ambulatory_fs_score]='4',5.5, if([ambulatory_fs_score]='3',5, if([highest_fs]=0,0, if([highest_fs]=1 and [fs_one]=1,1, if([highest_fs]=1 and [fs_one]>1,1.5, if([highest_fs]=2 and [fs_two]=1,2, if([highest_fs]=2 and [fs_two]=2,2.5, if([highest_fs]=2 and ([fs_two]=3 or [fs_two]=4),3, if([highest_fs]=2 and [fs_two]=5,3.5, if([highest_fs]=2 and [fs_two]>=6,4, if([highest_fs]=3 and [fs_three]=1 and [fs_two]=0,3, if([highest_fs]=3 and [fs_three]=1 and [fs_two]>=1,3.5, if([highest_fs]=3 and [fs_three]=2 and [fs_two]=0,3.5, if([highest_fs]=3 and [fs_three]=2 and [fs_two]>0,4, if([highest_fs]=3 and [fs_three]>2 and [fs_three]<=4,4, if([highest_fs]=3 and [fs_three]=5,4.5, if([highest_fs]=3 and [fs_three]>=6,5, if([highest_fs]=4 and [fs_four]=1 and [fs_three]=0 and [fs_two]=0,4, if([highest_fs]=4 and [fs_four]=1 and ([fs_three]>=1 or [fs_two]>=1),4.5, if([highest_fs]=4 and [fs_four]>=2,5, if([highest_fs]>=5 and [fs_five]>=1,5,'')))))))))))))))))))))))))))))",,,,,,,,,,,," @HIDDEN"
+edss_calculated,edss,,calc,"EDSS Calculated
+","if([distance_assistance]=8 and [edss_calculated_pre]<=4.5,4.5, if([distance_assistance]=8 and [edss_calculated_pre]>=5,5, if([level_of_restricted_ambula]=2,5, if([distance_assistance]=9 and [edss_calculated_pre]>=4,4, if([distance_assistance]=9 and [edss_calculated_pre]< 4,[edss_calculated_pre], if(([level_of_restricted_ambula]= 1 or [level_of_restricted_ambula]=4) and [edss_calculated_pre]<=4.5,4.5, if(([level_of_restricted_ambula]= 1 or [level_of_restricted_ambula]=4) and [edss_calculated_pre]>=5,5, if([ambulatory_fs_score]=1 and [edss_calculated_pre]<=2,2, if([ambulatory_fs_score]=1 and [edss_calculated_pre]>2,[edss_calculated_pre],[edss_calculated_pre])))))))))","If this field is missing, ensure all FS scores sections are completed.  ",,,,,,,,,,,
