@@ -40,13 +40,13 @@ Key features:
 
 ## Citation
 
-If you use this instrument in your research, please cite:
+If you use this instrument in your research, please cite both this implementation and the original CIRCLE algorithm:
 
 > Murillo F, Bilodeau PA, et al. Implementation of a Clinical Instrument to Retrospectively Capture Levels of EDSS (CIRCLE) REDCap Instrument to Automate Neurologic Disability Documentation in Multiple Sclerosis. *[Manuscript in preparation]*.
 
-The CIRCLE algorithm was originally described in:
-
 > Ciotti JR, Sanders N, Salter A, Berger JR, Cross AH, Chahin S. Clinical instrument to retrospectively capture levels of EDSS. *Multiple Sclerosis and Related Disorders*. 2020;39:101887.
+
+Download [`CITATIONS.bib`](CITATIONS.bib) to import both references into your bibliography manager (Zotero, Mendeley, EndNote, etc.).
 
 ## License
 
