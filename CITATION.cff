@@ -4,18 +4,43 @@ type: software
 title: "CIRCLE EDSS REDCap Instrument"
 authors:
   - family-names: Murillo
-    given-names: Francisco
+    given-names: Fabian
+  - family-names: Chahin
+    given-names: Salim
+  - family-names: Ciotti
+    given-names: John R.
+  - family-names: Scimone
+    given-names: Eleanor
+  - family-names: Healy
+    given-names: Brian C.
+  - family-names: Chitnis
+    given-names: Tanuja
+  - family-names: Levy
+    given-names: Michael
   - family-names: Bilodeau
     given-names: Philippe A.
 license: MIT
 repository-code: "https://github.com/pbilodeau94/circle-edss-redcap"
 preferred-citation:
   type: article
-  title: "Implementation of a Clinical Instrument to Retrospectively Capture Levels of EDSS (CIRCLE) REDCap Instrument to Automate Neurologic Disability Documentation in Multiple Sclerosis"
+  title: "Implementation and Feasibility of a REDCap-Based CIRCLE Instrument for Automated Retrospective EDSS Scoring in Multiple Sclerosis"
   authors:
     - family-names: Murillo
-      given-names: Francisco
+      given-names: Fabian
+    - family-names: Chahin
+      given-names: Salim
+    - family-names: Ciotti
+      given-names: John R.
+    - family-names: Scimone
+      given-names: Eleanor
+    - family-names: Healy
+      given-names: Brian C.
+    - family-names: Chitnis
+      given-names: Tanuja
+    - family-names: Levy
+      given-names: Michael
     - family-names: Bilodeau
       given-names: Philippe A.
+  journal: "Multiple Sclerosis Journal"
   year: 2026
   status: advance-online
