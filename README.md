@@ -48,15 +48,13 @@ Functional system subscores and the final EDSS are calculated automatically. Aut
 
 ## Citation
 
-If you use this instrument, please cite the original CIRCLE algorithm and this implementation:
+If you use this instrument, please cite the original CIRCLE algorithm:
 
-**This instrument:**
-> Murillo F, Chahin S, Ciotti JR, Scimone E, Healy BC, Chitnis T, Levy M, Bilodeau PA. Implementation and Feasibility of a REDCap-Based CIRCLE Instrument for Automated Retrospective EDSS Scoring in Multiple Sclerosis. *Multiple Sclerosis Journal*. 2026.
-
-**Original CIRCLE algorithm:**
 > Ciotti JR, Sanders N, Salter A, Berger JR, Cross AH, Chahin S. Clinical instrument to retrospectively capture levels of EDSS. *Multiple Sclerosis and Related Disorders*. 2020;39:101887. doi:10.1016/j.msard.2019.101887
 
-Download [`CITATIONS.bib`](CITATIONS.bib) to import both references into Zotero, Mendeley, or EndNote.
+A citation for this REDCap implementation will be added upon publication.
+
+Download [`CITATIONS.bib`](CITATIONS.bib) to import the reference into Zotero, Mendeley, or EndNote.
 
 ## License
 
