@@ -1,53 +1,63 @@
 # CIRCLE EDSS REDCap Instrument
 
-A REDCap instrument that automates the Clinical Instrument to Retrospectively Capture Levels of EDSS (CIRCLE) algorithm for standardized, retrospective scoring of the Expanded Disability Status Scale (EDSS) in multiple sclerosis.
+A REDCap instrument implementing the CIRCLE (Clinical Instrument to Retrospectively Capture Levels of EDSS) algorithm for retrospective EDSS scoring in multiple sclerosis research. Functional system subscores and the final EDSS are calculated automatically via REDCap calculated fields.
 
-## Overview
+## Import into REDCap
 
-The EDSS is the gold standard for evaluating disability in patients with multiple sclerosis. However, manual EDSS scoring is time-consuming, requires significant expertise, and is prone to inter-rater variability. This REDCap instrument implements the CIRCLE algorithm with branching logic, ambulation constraints, and automated calculation of Functional System (FS) subscores and the final EDSS score.
+### Add to an existing project (recommended)
 
-Key features:
+1. Download [`CIRCLEEDSS_instrument.zip`](CIRCLEEDSS_instrument.zip)
+2. In REDCap, open your project and go to **Online Designer**
+3. Click **Upload instrument ZIP** (bottom of the instrument list)
+4. Select `CIRCLEEDSS_instrument.zip`
+5. The CIRCLE EDSS instrument will be added to your project alongside existing instruments
 
-- **Branching logic**: Starts with the most severe disability in each functional system, skipping unnecessary questions to reduce completion time
-- **Automated scoring**: FS subscores and final EDSS are calculated automatically based on CIRCLE rules
-- **Ambulation constraints**: Wheelchair/bed-bound status triggers immediate EDSS calculation
-- **Adjusted scores**: Bowel/bladder and visual system scores are adjusted per CIRCLE guidelines
-- **Skip logic**: If no disability is present in a functional system, the scorer can skip directly to the next
+### Create a new standalone project
 
-## Installation
+1. Download [`CIRCLEEDSS_DataDictionary.csv`](CIRCLEEDSS_DataDictionary.csv)
+2. In REDCap, create a new project and go to **Project Setup**
+3. Under **Data Dictionary**, click **Upload** and select the CSV file
+4. This replaces the entire project data dictionary — use only for a fresh project
 
-1. Download `CIRCLEEDSS_DataDictionary.csv`
-2. In REDCap, navigate to **Project Setup** > **Data Dictionary** (or **Online Designer** > **Upload**)
-3. Upload the CSV file as a new instrument or add it to an existing project
+## Instrument design
+
+Each functional system begins with a screening question asking whether any disability is present. A negative response advances the scorer directly to the next system, with a score of 0 assigned automatically. When disability is present, options are presented from highest to lowest severity, allowing early selection once the appropriate severity level is reached.
+
+The instrument covers all eight CIRCLE functional systems:
+
+| Functional System | Notes |
+|---|---|
+| Pyramidal | |
+| Cerebellar | |
+| Brainstem | |
+| Sensory | |
+| Bowel and Bladder | Score adjusted per CIRCLE guidelines |
+| Visual | Acuity range extended below 20/200 (hand motion, finger counting, light perception, no light perception) |
+| Cerebral | Fatigue collected but excluded from subscore to preserve original CIRCLE schema |
+| Ambulation | EDSS floor of 2 for any gait difficulty; wheelchair/bed-bound status triggers immediate final score assignment |
+
+Functional system subscores and the final EDSS are calculated automatically. Automated scoring was validated against 1,000 simulated functional system profiles before deployment; REDCap outputs achieved 100% concordance with the CIRCLE scoring rubric.
 
 ## Files
 
 | File | Description |
-|------|-------------|
-| `CIRCLEEDSS_DataDictionary.csv` | REDCap data dictionary for the CIRCLE EDSS scoring instrument (170 variables) |
-| `CIRCLEEDSSSurvey_DataDictionary.csv` | REDCap data dictionary for the accompanying user feedback survey |
-
-## Functional Systems Covered
-
-- Pyramidal
-- Cerebellar
-- Brainstem
-- Sensory
-- Bowel and Bladder
-- Visual
-- Cerebral
-- Ambulation
+|---|---|
+| `CIRCLEEDSS_instrument.zip` | REDCap instrument ZIP — add to an existing project via Online Designer |
+| `CIRCLEEDSS_DataDictionary.csv` | Full REDCap data dictionary — use to create a new standalone project |
+| `CIRCLEEDSSSurvey_DataDictionary.csv` | Data dictionary for the accompanying usability survey |
 
 ## Citation
 
-If you use this instrument in your research, please cite both this implementation and the original CIRCLE algorithm:
+If you use this instrument, please cite the original CIRCLE algorithm and this implementation:
 
-> Murillo F, Bilodeau PA, et al. Implementation of a Clinical Instrument to Retrospectively Capture Levels of EDSS (CIRCLE) REDCap Instrument to Automate Neurologic Disability Documentation in Multiple Sclerosis. *[Manuscript in preparation]*.
+**This instrument:**
+> Murillo F, Chahin S, Ciotti JR, Scimone E, Healy BC, Chitnis T, Levy M, Bilodeau PA. Implementation and Feasibility of a REDCap-Based CIRCLE Instrument for Automated Retrospective EDSS Scoring in Multiple Sclerosis. *Multiple Sclerosis Journal*. 2026.
 
-> Ciotti JR, Sanders N, Salter A, Berger JR, Cross AH, Chahin S. Clinical instrument to retrospectively capture levels of EDSS. *Multiple Sclerosis and Related Disorders*. 2020;39:101887.
+**Original CIRCLE algorithm:**
+> Ciotti JR, Sanders N, Salter A, Berger JR, Cross AH, Chahin S. Clinical instrument to retrospectively capture levels of EDSS. *Multiple Sclerosis and Related Disorders*. 2020;39:101887. doi:10.1016/j.msard.2019.101887
 
-Download [`CITATIONS.bib`](CITATIONS.bib) to import both references into your bibliography manager (Zotero, Mendeley, EndNote, etc.).
+Download [`CITATIONS.bib`](CITATIONS.bib) to import both references into Zotero, Mendeley, or EndNote.
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+MIT License. See [LICENSE](LICENSE) for details.
