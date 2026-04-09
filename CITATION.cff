@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this instrument, please cite it as below."
+message: "If you use this instrument, please cite the original CIRCLE algorithm as below."
 type: software
 title: "CIRCLE EDSS REDCap Instrument"
 authors:
@@ -21,26 +21,3 @@ authors:
     given-names: Philippe A.
 license: MIT
 repository-code: "https://github.com/pbilodeau94/circle-edss-redcap"
-preferred-citation:
-  type: article
-  title: "Implementation and Feasibility of a REDCap-Based CIRCLE Instrument for Automated Retrospective EDSS Scoring in Multiple Sclerosis"
-  authors:
-    - family-names: Murillo
-      given-names: Fabian
-    - family-names: Chahin
-      given-names: Salim
-    - family-names: Ciotti
-      given-names: John R.
-    - family-names: Scimone
-      given-names: Eleanor
-    - family-names: Healy
-      given-names: Brian C.
-    - family-names: Chitnis
-      given-names: Tanuja
-    - family-names: Levy
-      given-names: Michael
-    - family-names: Bilodeau
-      given-names: Philippe A.
-  journal: "Multiple Sclerosis Journal"
-  year: 2026
-  status: advance-online
